@@ -219,7 +219,7 @@ uint16_t AS5048A_read(uint16_t registerAddress)
 
     dataToSend |= command;
 
-    ESP_LOGD(TAG, "Register 0x%X command 0x%X", registerAddress, command);
+    //ESP_LOGD(TAG, "Register 0x%X command 0x%X", registerAddress, command);
 
     dataToSend |= SPI_SWAP_DATA_TX(*(uint32_t *)&dataToSend, 32);
 
@@ -239,12 +239,12 @@ uint16_t AS5048A_read(uint16_t registerAddress)
     response &= 0xFFFF;
     response = SPI_SWAP_DATA_RX(*(uint16_t *)&response, 16);
 
-    ESP_LOGD(TAG, "Response 0x%X", response);
+    //ESP_LOGD(TAG, "Response 0x%X", response);
 
 	//Check if the error bit is set
 	if(response & 0x4000)
 	{
-	    ESP_LOGD(TAG, "Setting error bit");
+	    //ESP_LOGD(TAG, "Setting error bit");
 		AS5048A.errorFlag = true;
 	}
 	else
@@ -272,7 +272,7 @@ uint16_t AS5048A_write(uint16_t registerAddress, uint16_t data)
 
 	uint32_t dataToSend = (uint32_t)command << 16 | (uint32_t)data;
 
-    ESP_LOGD(TAG, "write(): reg 0x%X dataToSend 0x%X", registerAddress, dataToSend);
+    //ESP_LOGD(TAG, "write(): reg 0x%X dataToSend 0x%X", registerAddress, dataToSend);
 
     err = spi_device_acquire_bus(AS5048A.spi, portMAX_DELAY);
     if(err != ESP_OK) return 0;
@@ -296,7 +296,7 @@ uint16_t AS5048A_write(uint16_t registerAddress, uint16_t data)
 
     response = SPI_SWAP_DATA_RX(*(uint32_t *)&response, 32);
 
-    ESP_LOGD(TAG, "Response 0x%X", response);
+    //ESP_LOGD(TAG, "Response 0x%X", response);
 
 	//Return the data, stripping the parity and error bits
 	return response & ~0xC000;
